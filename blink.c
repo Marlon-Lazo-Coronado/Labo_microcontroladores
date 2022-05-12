@@ -4,17 +4,39 @@
 
 int request_botton = 0 ;
 
+
+
 /* we lisening the interrup in D0 */
 ISR (PCINT2_vect){
   request_botton = 1 ;
 }
 
+
+int state = 1;
 /* we lisening the timer interruption */
 ISR (TIMER0_OVF_vect)
 {
-  if (request_botton == 1 )
+  /*if (request_botton == 1 )
+    PORTB |= ( 1 <<PB0)|( 1 <<PB1)|( 1 <<PB2);*/
+  switch (state){
+    case 1: 
+      if (request_botton == 1 ) {
 
-      PORTB |= ( 1 <<PB0)|( 1 <<PB1)|( 1 <<PB2);    
+        PORTB |= ( 1 <<PB0)|( 1 <<PB1)|( 1 <<PB2);
+        _delay_ms(30000);
+
+        state = 2;
+      }
+      break;
+    case 2:
+
+      PORTB &= ~(1<<PB0);
+      PORTB &= ~(1<<PB1);
+      PORTB &= ~(1<<PB2);
+      _delay_ms(30000);
+      state = 1;
+      break;
+  }
 }
 
 void  settings (){
