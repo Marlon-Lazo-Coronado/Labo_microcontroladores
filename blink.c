@@ -11,6 +11,10 @@ ISR (PCINT2_vect){
   request_botton = 1 ;
 }
 
+ISR (PCINT1_vect){
+  request_botton = 1 ;
+}
+
 
 int state = 1;
 /* we lisening the timer interruption */
@@ -46,6 +50,8 @@ void  settings (){
   /* we set the interrup for the D0 input */
   GIMSK |= ( 1 << PCIE2);
   PCMSK2 = 0b00000001 ;
+  GIMSK |= ( 1 << PCIE1);
+  PCMSK1 = 0b00000001 ;
   
   /* settings for timer interrup */
   TCCR0A= 0x00 ;   //couters in normal mode
